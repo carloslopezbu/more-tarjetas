@@ -1,5 +1,4 @@
 import React from "react";
-import Simulator from "./components/Simulator";
 
 export default function App() {
     return (
