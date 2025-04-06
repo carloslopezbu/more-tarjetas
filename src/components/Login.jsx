@@ -14,6 +14,7 @@ export default function Login() {
         <img
           src="/assets/more.jpeg"
           alt="Image"
+          className="blur-sm object-cover object-center w-full h-full"
         />
       </div>
     </div>
