@@ -10,9 +10,6 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-console.log("Supabase URL:", supabaseUrl)
-console.log("Supabase Key:", supabaseKey)
-
 export function LoginForm({
   className,
   ...props
