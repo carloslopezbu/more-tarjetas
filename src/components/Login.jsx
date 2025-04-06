@@ -12,7 +12,7 @@ export default function Login() {
       </div>
       <div className="relative hidden lg:block">
         <img
-          src="/more.jpeg"
+          src="/assets/more.jpeg"
           alt="Image"
         />
       </div>
