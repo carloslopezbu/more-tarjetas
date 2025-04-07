@@ -7,19 +7,13 @@ import { createClient } from "@supabase/supabase-js"
 
 // Configuración de Supabase
 const env = import.meta.env
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseUrl = env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 console.log("Supabase Client:")
 console.log(supabaseUrl)
 
-if (!supabaseUrl && !supabaseKey) {
-  console.error("❌ Variables de entorno faltan en producción:")
-  console.log("SUPABASE_URL:", supabaseUrl)
-  console.log("SUPABASE_KEY:", supabaseKey)
-  throw new Error("Missing Supabase URL or Key in environment variables.")
-}
 
 export function LoginForm({
   className,
