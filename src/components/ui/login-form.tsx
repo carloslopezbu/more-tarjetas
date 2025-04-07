@@ -6,8 +6,8 @@ import { Label } from "@/components/ui/label"
 import { createClient } from "@supabase/supabase-js"
 
 // Configuración de Supabase
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY
+const supabaseUrl = import.meta.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseKey = import.meta.env.NEXT_PUBLIC_SUPABASE
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 export function LoginForm({
