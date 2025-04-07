@@ -10,8 +10,12 @@ const supabaseUrl = import.meta.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseKey = import.meta.env.NEXT_PUBLIC_SUPABASE
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-console.log("Supabase URL:", supabaseUrl)
-console.log("Supabase Key:", supabaseKey)
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error("Missing Supabase URL or Key in environment variables.")
+  console.log("Supabase URL:", supabaseUrl)
+  console.log("Supabase Key:", supabaseKey)
+}
+
 
 export function LoginForm({
   className,
