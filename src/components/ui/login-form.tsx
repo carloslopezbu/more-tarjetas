@@ -6,8 +6,9 @@ import { Label } from "@/components/ui/label"
 import { createClient } from "@supabase/supabase-js"
 
 // Configuración de Supabase
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey = import.meta.env.VITE_SUPABASE
+const env = import.meta.env
+const supabaseUrl = env.VITE_SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseKey = env.VITE_SUPABASE_ANON_KEY || env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 console.log("Supabase Client:")
 console.log(supabaseUrl)
