@@ -7,8 +7,8 @@ import { createClient } from "@supabase/supabase-js"
 
 // Configuración de Supabase
 const env = import.meta.env
-const supabaseUrl = env.VITE_SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseKey = env.VITE_SUPABASE_ANON_KEY || env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || env.VITE_SUPABASE_URL 
+const supabaseKey = env.NEXT_PUBLIC_SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 console.log("Supabase Client:")
 console.log(supabaseUrl)
@@ -18,7 +18,6 @@ if (!supabaseUrl || !supabaseKey) {
   console.log("Supabase URL:", supabaseUrl)
   console.log("Supabase Key:", supabaseKey)
 }
-
 
 export function LoginForm({
   className,
@@ -30,35 +29,26 @@ export function LoginForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError(null) // Reset error state
+    setError(null)
+  
     try {
-      let { data: users, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email)
-      .eq('password', password)
-
-
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+  
       if (error) {
-        console.error("Error al obtener el usuario:", error)
-        setError("Error al obtener el usuario. Intenta de nuevo.")
+        console.error("Error al iniciar sesión:", error.message)
+        setError("Email o contraseña incorrecta.")
         return
       }
-      else if (users.length === 0) {
-        setError("El usuario no existe. Verifica tu email.")
-        return
-      }
-
-      else if (users[0].password !== password) {
-        setError("Contraseña incorrecta. Intenta de nuevo.")
-        return
-      }
-
-      // Redirigir a otra página después de iniciar sesión correctamente
+  
+      console.log("Sesión iniciada correctamente:", data)
+      // Redirige o muestra mensaje
       // window.location.href = "/dashboard"
     } catch (err) {
       console.error("Error inesperado:", err)
-      setError("Error inesperado al intentar iniciar sesión. Verifica tu conexión.")
+      setError("Ups... algo fue mal.")
     }
   }
 
