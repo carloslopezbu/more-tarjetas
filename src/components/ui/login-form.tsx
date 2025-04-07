@@ -14,9 +14,10 @@ console.log("Supabase Client:")
 console.log(supabaseUrl)
 
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error("Missing Supabase URL or Key in environment variables.")
   console.log("Supabase URL:", supabaseUrl)
   console.log("Supabase Key:", supabaseKey)
+  throw new Error("Missing Supabase URL or Key in environment variables.")
+  
 }
 
 export function LoginForm({
