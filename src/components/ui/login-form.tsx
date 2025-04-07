@@ -8,13 +8,13 @@ import { createClient } from "@supabase/supabase-js"
 // Configuración de Supabase
 const env = import.meta.env
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 console.log("Supabase Client:")
 console.log(supabaseUrl)
 
-if (!supabaseUrl || !supabaseKey) {
+if (!supabaseUrl && !supabaseKey) {
   console.error("❌ Variables de entorno faltan en producción:")
   console.log("SUPABASE_URL:", supabaseUrl)
   console.log("SUPABASE_KEY:", supabaseKey)
