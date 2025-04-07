@@ -22,12 +22,20 @@ export function LoginForm({
     e.preventDefault()
     setError(null) // Reset error state
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      let { data: users, error } = await supabase
+      .from('users')
+      .select('email')
+      .eq('email', email)
+
+      console.log("Usuarios obtenidos:", users)
       if (error) {
-        console.error("Error al iniciar sesión:", error.message)
-        setError("Error al iniciar sesión: " + error.message)
-      } else {
-        alert("Inicio de sesión exitoso")
+        console.error("Error al obtener el usuario:", error)
+        setError("Error al obtener el usuario. Intenta de nuevo.")
+        return
+      }
+      if (users.length === 0) {
+        setError("El usuario no existe. Verifica tu email.")
+        return
       }
     } catch (err) {
       console.error("Error inesperado:", err)
