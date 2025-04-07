@@ -25,7 +25,6 @@ export function LoginForm({
       let { data: users, error } = await supabase
       .from('users')
       .select('email')
-      .eq('email', email)
 
       console.log("Usuarios obtenidos:", users)
       if (error) {
