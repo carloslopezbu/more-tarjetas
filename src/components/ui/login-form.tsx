@@ -24,18 +24,28 @@ export function LoginForm({
     try {
       let { data: users, error } = await supabase
       .from('users')
-      .select('email')
+      .select('*')
+      .eq('email', email)
+      .eq('password', password)
 
-      console.log("Usuarios obtenidos:", users)
+
       if (error) {
         console.error("Error al obtener el usuario:", error)
         setError("Error al obtener el usuario. Intenta de nuevo.")
         return
       }
-      if (users.length === 0) {
+      else if (users.length === 0) {
         setError("El usuario no existe. Verifica tu email.")
         return
       }
+
+      else if (users[0].password !== password) {
+        setError("Contraseña incorrecta. Intenta de nuevo.")
+        return
+      }
+
+      // Redirigir a otra página después de iniciar sesión correctamente
+      // window.location.href = "/dashboard"
     } catch (err) {
       console.error("Error inesperado:", err)
       setError("Error inesperado al intentar iniciar sesión. Verifica tu conexión.")
