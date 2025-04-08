@@ -14,6 +14,7 @@ export function AppCarousel() {
   const [images, setImages] = React.useState([])
 
   React.useEffect(() => {
+    if(images.length > 0) return
     fetchDriveImages().then((files) => {
       setImages(files);
     });
@@ -36,10 +37,6 @@ export function AppCarousel() {
                             src={img.thumbnailLink} // Verifica que esta URL sea válida
                             alt={img.name || "Imagen"}
                             className="w-full h-full object-cover rounded-lg"
-                            onError={(e) => {
-                            console.error("Error al cargar la imagen:", e.target.src);
-                            e.target.src = "/placeholder.png"; // Imagen de respaldo
-                            }}
                         />
                     </CardContent>
                 </Card>
