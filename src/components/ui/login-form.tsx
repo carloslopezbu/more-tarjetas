@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { createClient } from "@supabase/supabase-js"
+import { VITE_SUPABASE_ANON, VITE_SUPABASE_URL } from "../../credentials"
 
 // Configuración de Supabase
-const env = import.meta.env
-const supabaseUrl = env.VITE_SUPABASE_URL
-const supabaseKey = env.VITE_SUPABASE_ANON
+
+const supabaseUrl = VITE_SUPABASE_URL
+const supabaseKey = VITE_SUPABASE_ANON
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
