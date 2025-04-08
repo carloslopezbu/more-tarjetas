@@ -23,7 +23,7 @@ export default function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      navigate("/");
+      navigate("/home");
     }
   }, [loggedIn, navigate]);
 
