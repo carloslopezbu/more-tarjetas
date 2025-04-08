@@ -36,7 +36,6 @@ export default function App() {
           <ProtectedRoute loggedIn={loggedIn}>
             <Dashboard />
           </ProtectedRoute>
-          
         }
       />
     </Routes>
