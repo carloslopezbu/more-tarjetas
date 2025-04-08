@@ -33,8 +33,9 @@ export default function App() {
       <Route
         path="/home"
         element={
-          // <ProtectedRoute loggedIn={loggedIn}>
+          <ProtectedRoute loggedIn={loggedIn}>
             <Dashboard />
+          </ProtectedRoute>
           
         }
       />
