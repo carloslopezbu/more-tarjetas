@@ -9,8 +9,6 @@ import {
 
 import { fetchDriveImages } from "../api/Drive"
 
-  
-
 export function AppCarousel() {
   const plugin = React.useRef(Autoplay({ delay: 5000, stopOnInteraction: false }))
   const [images, setImages] = React.useState([])
@@ -31,7 +29,7 @@ export function AppCarousel() {
     <CarouselContent>
       {images.map((img, index) => (
         <CarouselItem key={img.id}>
-            <div className="p-1">
+            <div className="">
                 <Card className="border-2 border-rose-400 rounded-lg">
                     <CardContent className="flex aspect-square items-center justify-center p-6">
                         <img
