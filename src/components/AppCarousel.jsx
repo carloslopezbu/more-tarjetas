@@ -33,11 +33,11 @@ export function AppCarousel() {
             <div className="">
                 <Card className="border-2 border-rose-400 rounded-lg">
                     <CardContent className="flex aspect-square items-center justify-center p-6">
-                        <img
-                            src={img.thumbnailLink} // Verifica que esta URL sea válida
-                            alt={img.name || "Imagen"}
-                            className="w-full h-full object-cover rounded-lg"
-                        />
+                    <img
+                      src={`https://drive.google.com/uc?export=view&id=${img.id}`}
+                      alt={img.name}
+                      className="w-48 h-48 object-cover rounded-lg"
+                    />
                     </CardContent>
                 </Card>
             </div>
