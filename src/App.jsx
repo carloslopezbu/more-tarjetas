@@ -23,7 +23,7 @@ export default function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      navigate("/home");
+      navigate("/");
     }
   }, [loggedIn, navigate]);
 
@@ -33,9 +33,9 @@ export default function App() {
       <Route
         path="/home"
         element={
-          <ProtectedRoute loggedIn={loggedIn}>
+          // <ProtectedRoute loggedIn={loggedIn}>
             <Dashboard />
-          </ProtectedRoute>
+          
         }
       />
     </Routes>

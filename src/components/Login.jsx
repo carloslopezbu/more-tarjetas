@@ -12,7 +12,7 @@ export default function Login({setLoggedIn, setUser}) {
       </div>
       <div className="relative hidden lg:block">
         <img
-          src="/assets/more.jpeg"
+          src="more.jpeg"
           alt="Image"
           className="blur-lg object-cover object-center w-full h-full"
         />
