@@ -13,10 +13,18 @@ const supabaseKey = VITE_SUPABASE_ANON
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
+interface LoginFormProps extends React.ComponentPropsWithoutRef<"form"> {
+  className?: string
+  setLoggedIn?: (loggedIn: boolean) => void
+  setUser?: (user: any) => void
+}
+
 export function LoginForm({
   className,
+  setLoggedIn,
+  setUser,
   ...props
-}: React.ComponentPropsWithoutRef<"form">) {
+}: LoginFormProps) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -38,6 +46,9 @@ export function LoginForm({
       }
   
       // Redirige o muestra mensaje
+      console.log("Inicio de sesión exitoso")
+      setLoggedIn && setLoggedIn(true)
+      setUser && setUser(data.user)
       
     } catch (err) {
       console.error("Error inesperado:", err)
