@@ -9,14 +9,19 @@ import { createSupabaseClient } from "@/api/Supabase"
 
 const supabase = createSupabaseClient()
 
-export default function TaskList() {
+export default function TaskList({ type }) {
   const [tasks, setTasks] = useState([])
   const [newTask, setNewTask] = useState("")
 
   // 🔄 Cargar tareas desde Supabase
   useEffect(() => {
     const fetchTasks = async () => {
-      const { data, error } = await supabase.from("tasks").select("*").order("id", { ascending: true })
+      const { data, error } = await supabase
+        .from("tasks")
+        .select("*")
+        .eq("type", type)
+        .order("id", { ascending: true })
+
       if (error) {
         console.error("Error al cargar tareas:", error)
       } else {
@@ -25,20 +30,32 @@ export default function TaskList() {
     }
 
     fetchTasks()
-  }, [])
+  }, [type])
 
   // ➕ Agregar tarea (solo en UI por ahora)
   const addTask = () => {
     if (!newTask.trim()) return
-    setTasks([...tasks, { title: newTask.trim(), done: false }])
+    setTasks([...tasks, { title: newTask.trim(), done: false, type }])
     setNewTask("")
   }
 
-  // ✅ Cambiar estado (solo en UI)
-  const toggleTask = (index) => {
+  // ✅ Cambiar estado (y guardar si ya existe)
+  const toggleTask = async (index) => {
     const updated = [...tasks]
     updated[index].done = !updated[index].done
     setTasks(updated)
+
+    const task = updated[index]
+    if (task.id) {
+      const { error } = await supabase
+        .from("tasks")
+        .update({ done: task.done })
+        .eq("id", task.id)
+
+      if (error) {
+        console.error("Error actualizando tarea:", error)
+      }
+    }
   }
 
   // ❌ Eliminar tarea de Supabase y UI
@@ -54,18 +71,41 @@ export default function TaskList() {
     setTasks(tasks.filter((_, i) => i !== index))
   }
 
-  // 💾 Guardar nuevas tareas a Supabase
+  // 💾 Guardar nuevas tareas y actualizar existentes
   const saveTasks = async () => {
     const newTasks = tasks.filter(task => !task.id)
-    if (newTasks.length === 0) return
+    const existingTasks = tasks.filter(task => task.id)
 
-    const { data, error } = await supabase.from("tasks").insert(newTasks)
-    if (error) {
-      console.error("Error al guardar tareas:", error)
+    // Insertar nuevas tareas
+    if (newTasks.length > 0) {
+      const { error } = await supabase.from("tasks").insert(newTasks)
+      if (error) {
+        console.error("Error al guardar nuevas tareas:", error)
+      }
+    }
+
+    // Actualizar tareas existentes (solo campo 'done')
+    for (const task of existingTasks) {
+      const { error } = await supabase
+        .from("tasks")
+        .update({ done: task.done })
+        .eq("id", task.id)
+
+      if (error) {
+        console.error(`Error actualizando tarea "${task.title}":`, error)
+      }
+    }
+
+    // Refrescar tareas
+    const { data: updatedTasks, error: fetchError } = await supabase
+      .from("tasks")
+      .select("*")
+      .eq("type", type)
+      .order("id", { ascending: true })
+
+    if (fetchError) {
+      console.error("Error recargando tareas:", fetchError)
     } else {
-      console.log("Tareas guardadas:", data)
-      // Refrescar tareas con IDs asignados
-      const { data: updatedTasks } = await supabase.from("tasks").select("*").order("id", { ascending: true })
       setTasks(updatedTasks || [])
     }
   }
@@ -116,7 +156,7 @@ export default function TaskList() {
         variant="primary"
       >
         <Save className="mr-2" size={18} />
-        Guardar Tareas Nuevas
+        Guardar Cambios
       </Button>
     </Card>
   )

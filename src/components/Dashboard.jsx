@@ -17,7 +17,7 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="w-1/4">
-      <TaskList />
+      <TaskList type={"Inicio"} />
       </div>
     </div>
   );
