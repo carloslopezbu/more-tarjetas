@@ -3,16 +3,9 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { createClient } from "@supabase/supabase-js"
-import { VITE_SUPABASE_ANON, VITE_SUPABASE_URL } from "../../credentials"
+import { createSupabaseClient } from "@/api/Supabase"
 
-// Configuración de Supabase
-
-const supabaseUrl = VITE_SUPABASE_URL
-const supabaseKey = VITE_SUPABASE_ANON
-
-const supabase = createClient(supabaseUrl, supabaseKey)
-
+const supabase = createSupabaseClient()
 interface LoginFormProps extends React.ComponentPropsWithoutRef<"form"> {
   className?: string
   setLoggedIn?: (loggedIn: boolean) => void
