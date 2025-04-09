@@ -44,7 +44,7 @@ export default function TaskList({ type }) {
       ...tasks,
       {
         title: newTask.trim(),
-        done: false,
+        status: 0, // Default status: 0
         type,
         user_email: userEmail,
       },
@@ -53,16 +53,16 @@ export default function TaskList({ type }) {
   }
 
   // ✅ Cambiar estado (y guardar si ya existe)
-  const toggleTask = async (index) => {
+  const toggleTaskStatus = async (index) => {
     const updated = [...tasks]
-    updated[index].done = !updated[index].done
+    updated[index].status = (updated[index].status + 1) % 3 // Ciclar entre 0, 1, 2
     setTasks(updated)
 
     const task = updated[index]
     if (task.id) {
       const { error } = await supabase
         .from("tasks")
-        .update({ done: task.done })
+        .update({ status: task.status })
         .eq("id", task.id)
         .eq("user_email", userEmail)
 
@@ -101,7 +101,7 @@ export default function TaskList({ type }) {
     if (newTasks.length > 0) {
       const { data: insertedTasks, error } = await supabase
         .from("tasks")
-        .insert(newTasks)
+        .insert(newTasks.map(task => ({ ...task, status: 0 }))) // Default status: 0
         .select() // para recuperar los IDs de las nuevas tareas
 
       if (error) {
@@ -112,11 +112,11 @@ export default function TaskList({ type }) {
       }
     }
 
-    // Actualizar tareas existentes (solo campo 'done')
+    // Actualizar tareas existentes (solo campo 'status')
     for (const task of existingTasks) {
       const { error } = await supabase
         .from("tasks")
-        .update({ done: task.done })
+        .update({ status: task.status })
         .eq("id", task.id)
         .eq("user_email", userEmail)
 
@@ -141,9 +141,9 @@ export default function TaskList({ type }) {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto mt-6 shadow-xl p-4 rounded-2xl">
-      <h2 className="text-xl font-bold mb-4">📝 Lista de Tareas</h2>
-      <div className="flex gap-2 mb-4">
+    <Card className="w-full h-full p-6 rounded-2xl">
+      <h2 className="text-2xl font-bold mb-6">📝 Lista de Tareas</h2>
+      <div className="flex gap-4 mb-6">
         <Input
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
@@ -151,23 +151,35 @@ export default function TaskList({ type }) {
           className="flex-1"
         />
         <Button onClick={addTask} size="icon" variant="default">
-          <Plus size={20} />
+          <Plus size={24} />
         </Button>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-4">
         {tasks.map((task, index) => (
           <div
             key={task.id ?? `temp-${index}`}
-            className="flex items-center justify-between p-2 bg-muted rounded-xl hover:bg-muted/80 transition"
+            className="flex items-center justify-between p-4 bg-muted rounded-xl hover:bg-muted/80 transition"
           >
-            <div className="flex items-center gap-3">
-              <Checkbox
-                checked={task.done}
-                onCheckedChange={() => toggleTask(index)}
-              />
-              <span className={`text-sm ${task.done ? "line-through text-muted-foreground" : ""}`}>
-                {task.title}
-              </span>
+            <div className="flex items-center gap-4">
+              <Button
+                onClick={() => toggleTaskStatus(index)}
+                size="sm"
+                variant="outline"
+                className={`${
+                  task.status === 0
+                    ? "text-red-500"
+                    : task.status === 1
+                    ? "text-yellow-500"
+                    : "text-green-500"
+                }`}
+              >
+                {task.status === 0
+                  ? "Por Completar"
+                  : task.status === 1
+                  ? "En Progreso"
+                  : "Finalizada"}
+              </Button>
+              <span className="text-lg">{task.title}</span>
             </div>
             <Button
               onClick={() => removeTask(index)}
@@ -175,17 +187,17 @@ export default function TaskList({ type }) {
               variant="ghost"
               className="text-red-500 hover:text-red-700"
             >
-              <Trash2 size={18} />
+              <Trash2 size={24} />
             </Button>
           </div>
         ))}
       </div>
       <Button
         onClick={saveTasks}
-        className="w-full mt-4 bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded"
+        className="w-full mt-6 bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-6 rounded"
         variant="primary"
       >
-        <Save className="mr-2" size={18} />
+        <Save className="mr-2" size={24} />
         Guardar Cambios
       </Button>
     </Card>

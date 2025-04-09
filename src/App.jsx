@@ -1,8 +1,9 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import TaskListManager from "./components/TaskListManager";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(() => {
@@ -35,6 +36,14 @@ export default function App() {
         element={
           <ProtectedRoute loggedIn={loggedIn}>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/tasklist/"
+        element={
+          <ProtectedRoute loggedIn={loggedIn}>
+            <TaskListManager />
           </ProtectedRoute>
         }
       />

@@ -26,7 +26,7 @@ const items = [
   },
   {
     title: "Lista de tareas",
-    url: "#",
+    url: "/tasklist",
     icon: ListCheck
   },
   {
