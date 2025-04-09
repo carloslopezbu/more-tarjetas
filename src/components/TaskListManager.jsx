@@ -74,7 +74,7 @@ export default function TaskListManager() {
 
 
   return (
-    <div className="w-full h-screen p-6 bg-gray-100 overflow-auto">
+    <div className="w-full h-screen p-6 bg-rose-100 overflow-auto">
       <h2 className="text-2xl font-bold mb-6">📋 Gestor de Tareas</h2>
 
       {/* Crear nueva lista */}
@@ -83,7 +83,7 @@ export default function TaskListManager() {
           value={newListName}
           onChange={(e) => setNewListName(e.target.value)}
           placeholder="Nueva lista"
-          className="flex-1"
+          className="flex-1 ring-2 ring-rose-300 focus:ring-rose-500 transition-all duration-200"
         />
         <Button onClick={addList} size="icon">
           <Plus size={20} />
