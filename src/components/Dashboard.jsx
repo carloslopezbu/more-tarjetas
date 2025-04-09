@@ -1,6 +1,5 @@
 import { AppSidebar } from "@/components/AppSidebar";
 import { AppCarousel } from "@/components/AppCarousel";
-import TaskList from "./TaskList";
 
 export default function Dashboard() {
   return (
@@ -15,9 +14,6 @@ export default function Dashboard() {
         <div className="w-full max-w-xl mr-20">
           <AppCarousel />
         </div>
-      </div>
-      <div className="w-1/4">
-      <TaskList type={"Inicio"} />
       </div>
     </div>
   );
