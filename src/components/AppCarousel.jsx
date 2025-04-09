@@ -9,9 +9,9 @@ import {
 
 import { fetchDriveImages } from "../api/Drive"
 
-import img1 from "images/img1.jpeg"
-import img2 from "images/img2.jpeg"
-import img3 from "images/img3.jpeg"
+import img1 from "img1.jpeg"
+import img2 from "img2.jpeg"
+import img3 from "img3.jpeg"
 
 export function AppCarousel() {
   const plugin = React.useRef(Autoplay({ delay: 5000, stopOnInteraction: false }))
