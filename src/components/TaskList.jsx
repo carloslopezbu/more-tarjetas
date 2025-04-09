@@ -8,6 +8,8 @@ import { Trash2, Plus, Save } from "lucide-react"
 import { createSupabaseClient } from "@/api/Supabase"
 
 const supabase = createSupabaseClient()
+const user = JSON.parse(localStorage.getItem("user")) || null
+const userEmail = user?.email ?? null
 
 export default function TaskList({ type }) {
   const [tasks, setTasks] = useState([])
@@ -16,10 +18,13 @@ export default function TaskList({ type }) {
   // 🔄 Cargar tareas desde Supabase
   useEffect(() => {
     const fetchTasks = async () => {
+      if (!userEmail) return
+
       const { data, error } = await supabase
         .from("tasks")
         .select("*")
         .eq("type", type)
+        .eq("user_email", userEmail)
         .order("id", { ascending: true })
 
       if (error) {
@@ -35,7 +40,15 @@ export default function TaskList({ type }) {
   // ➕ Agregar tarea (solo en UI por ahora)
   const addTask = () => {
     if (!newTask.trim()) return
-    setTasks([...tasks, { title: newTask.trim(), done: false, type }])
+    setTasks([
+      ...tasks,
+      {
+        title: newTask.trim(),
+        done: false,
+        type,
+        user_email: userEmail,
+      },
+    ])
     setNewTask("")
   }
 
@@ -51,6 +64,7 @@ export default function TaskList({ type }) {
         .from("tasks")
         .update({ done: task.done })
         .eq("id", task.id)
+        .eq("user_email", userEmail)
 
       if (error) {
         console.error("Error actualizando tarea:", error)
@@ -62,7 +76,12 @@ export default function TaskList({ type }) {
   const removeTask = async (index) => {
     const task = tasks[index]
     if (task.id) {
-      const { error } = await supabase.from("tasks").delete().eq("id", task.id)
+      const { error } = await supabase
+        .from("tasks")
+        .delete()
+        .eq("id", task.id)
+        .eq("user_email", userEmail)
+
       if (error) {
         console.error("Error eliminando tarea:", error)
         return
@@ -71,16 +90,25 @@ export default function TaskList({ type }) {
     setTasks(tasks.filter((_, i) => i !== index))
   }
 
-  // 💾 Guardar nuevas tareas y actualizar existentes
+  // 💾 Guardar tareas y actualizarlas
   const saveTasks = async () => {
-    const newTasks = tasks.filter(task => !task.id)
-    const existingTasks = tasks.filter(task => task.id)
+    if (!userEmail) return
+
+    const newTasks = tasks.filter((task) => !task.id)
+    const existingTasks = tasks.filter((task) => task.id)
 
     // Insertar nuevas tareas
     if (newTasks.length > 0) {
-      const { error } = await supabase.from("tasks").insert(newTasks)
+      const { data: insertedTasks, error } = await supabase
+        .from("tasks")
+        .insert(newTasks)
+        .select() // para recuperar los IDs de las nuevas tareas
+
       if (error) {
         console.error("Error al guardar nuevas tareas:", error)
+      } else {
+        // Si se insertan nuevas tareas, actualizamos el estado con las tareas insertadas
+        setTasks([...tasks.filter(task => task.id), ...insertedTasks])
       }
     }
 
@@ -90,6 +118,7 @@ export default function TaskList({ type }) {
         .from("tasks")
         .update({ done: task.done })
         .eq("id", task.id)
+        .eq("user_email", userEmail)
 
       if (error) {
         console.error(`Error actualizando tarea "${task.title}":`, error)
@@ -101,6 +130,7 @@ export default function TaskList({ type }) {
       .from("tasks")
       .select("*")
       .eq("type", type)
+      .eq("user_email", userEmail)
       .order("id", { ascending: true })
 
     if (fetchError) {
