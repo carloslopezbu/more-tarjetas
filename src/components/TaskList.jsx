@@ -14,6 +14,7 @@ const userEmail = user?.email ?? null
 export default function TaskList({ type }) {
   const [tasks, setTasks] = useState([])
   const [newTask, setNewTask] = useState("")
+  const [filter, setFilter] = useState(null) // Estado para el filtro
 
   // 🔄 Cargar tareas desde Supabase
   useEffect(() => {
@@ -140,9 +141,45 @@ export default function TaskList({ type }) {
     }
   }
 
+  // Filtrar tareas según el estado seleccionado
+  const filteredTasks = filter === null ? tasks : tasks.filter(task => task.status === filter)
+
   return (
     <Card className="w-full h-full p-6 rounded-2xl">
       <h2 className="text-2xl font-bold mb-6">📝 Lista de Tareas</h2>
+
+      {/* Filtro de tareas */}
+      <div className="flex gap-4 mb-6">
+        <Button
+          onClick={() => setFilter(null)}
+          variant={filter === null ? "secondary" : "outline"}
+        >
+          Todas
+        </Button>
+        <Button
+          onClick={() => setFilter(0)}
+          variant={filter === 0 ? "secondary" : "outline"}
+          className="text-red-500"
+        >
+          Por Completar
+        </Button>
+        <Button
+          onClick={() => setFilter(1)}
+          variant={filter === 1 ? "secondary" : "outline"}
+          className="text-yellow-500"
+        >
+          En Progreso
+        </Button>
+        <Button
+          onClick={() => setFilter(2)}
+          variant={filter === 2 ? "secondary" : "outline"}
+          className="text-green-500"
+        >
+          Finalizada
+        </Button>
+      </div>
+
+      {/* Input para nueva tarea */}
       <div className="flex gap-4 mb-6">
         <Input
           value={newTask}
@@ -154,8 +191,10 @@ export default function TaskList({ type }) {
           <Plus size={24} />
         </Button>
       </div>
+
+      {/* Lista de tareas */}
       <div className="space-y-4">
-        {tasks.map((task, index) => (
+        {filteredTasks.map((task, index) => (
           <div
             key={task.id ?? `temp-${index}`}
             className="flex items-center justify-between p-4 bg-muted rounded-xl hover:bg-muted/80 transition"
@@ -192,6 +231,8 @@ export default function TaskList({ type }) {
           </div>
         ))}
       </div>
+
+      {/* Botón para guardar cambios */}
       <Button
         onClick={saveTasks}
         className="w-full mt-6 bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-6 rounded"
