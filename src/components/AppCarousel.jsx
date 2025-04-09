@@ -9,16 +9,28 @@ import {
 
 import { fetchDriveImages } from "../api/Drive"
 
+import img1 from "../../public/images/img1.jpeg"
+import img2 from "../../public/images/img2.jpeg"
+import img3 from "../../public/images/img3.jpeg"
+
 export function AppCarousel() {
   const plugin = React.useRef(Autoplay({ delay: 5000, stopOnInteraction: false }))
   const [images, setImages] = React.useState([])
 
-  React.useEffect(() => {
-    if(images.length > 0) return
-    fetchDriveImages().then((files) => {
-      setImages(files);
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   if(images.length > 0) return
+  //   fetchDriveImages().then((files) => {
+  //     setImages(files);
+  //   });
+  // }, []);
+
+  if(images.length === 0) {
+    setImages([
+      { id: 1, name: "Image 1", webContentLink: img1 },
+      { id: 2, name: "Image 2", webContentLink: img2 },
+      { id: 3, name: "Image 3", webContentLink: img3 },
+    ]);
+  }
 
   return (
     <Carousel
@@ -34,9 +46,9 @@ export function AppCarousel() {
                 <Card className="border-2 border-rose-400 rounded-lg">
                     <CardContent className="flex aspect-square items-center justify-center p-6">
                     <img
-                      src={`https://drive.google.com/uc?export=view&id=${img.id}`}
+                      src={img.webContentLink}
                       alt={img.name}
-                      className="w-48 h-48 object-cover rounded-lg"
+                      className="w-full h-full object-cover rounded-lg blur-md"
                     />
                     </CardContent>
                 </Card>

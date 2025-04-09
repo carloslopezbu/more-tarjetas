@@ -12,6 +12,7 @@ export async function fetchDriveImages() {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`Error ${res.status}`);
       const data = await res.json();
+      console.log(data);
       return data.files || [];
     } catch (err) {
       console.error("Algo malo ocurrió:", err.message);
