@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
 import { createSupabaseClient } from "@/api/Supabase"
 import TaskList from "./TaskList"
+import Home from "./Home";
+
 
 import {
   Carousel,
@@ -120,11 +122,14 @@ export default function TaskListManager() {
             </CarouselItem>
           ))}
         </CarouselContent>
+        {(taskLists.length > 1 &&
         <div className="flex justify-between mt-4">
           <CarouselPrevious />
           <CarouselNext />
-        </div>
+        </div>)}
       </Carousel>
+
+      <Home />
     </div>
   )
 }
