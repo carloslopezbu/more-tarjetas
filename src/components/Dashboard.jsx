@@ -1,6 +1,5 @@
 import { AppSidebar } from "@/components/AppSidebar";
 import { AppCarousel } from "@/components/AppCarousel";
-import Home from "./Home";
 
 export default function Dashboard() {
   return (

@@ -77,7 +77,7 @@ export default function TaskListManager() {
 
   return (
     <div className="w-full h-screen p-6 bg-rose-100 overflow-auto">
-      <h2 className="text-2xl font-bold mb-6">📋 Gestor de Tareas</h2>
+      <h2 className="text-2xl font-bold mb-6">📋 Organizador</h2>
 
       {/* Crear nueva lista */}
       <div className="w-full max-w-5xl flex items-center gap-4 mb-6 mx-auto justify-center">

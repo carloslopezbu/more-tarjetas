@@ -16,7 +16,7 @@ import {
 const items = [
   {
     title: "Página Principal",
-    url: "#",
+    url: "/home",
     icon: Home,
   },
   {
@@ -28,6 +28,11 @@ const items = [
     title: "Lista de tareas",
     url: "/tasklist",
     icon: ListCheck
+  },
+  {
+    title: "Contraseñas",
+    url: "/passwords",
+    icon: icons.Lock,
   },
   {
     title: "Configuración",

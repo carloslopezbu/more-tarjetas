@@ -14,7 +14,7 @@ import img2 from "/images/img2.jpeg"
 import img3 from "/images/img3.jpeg"
 
 export function AppCarousel() {
-  const plugin = React.useRef(Autoplay({ delay: 5000, stopOnInteraction: false }))
+  const plugin = React.useRef(Autoplay({ delay: 4000, stopOnInteraction: false }))
   const [images, setImages] = React.useState([])
 
   // React.useEffect(() => {
@@ -36,8 +36,6 @@ export function AppCarousel() {
     <Carousel
       plugins={[plugin.current]}
       className="w-full max-w-xl"
-      onMouseEnter={plugin.current.stop}
-      onMouseLeave={plugin.current.reset}
     >
     <CarouselContent>
       {images.map((img, index) => (
