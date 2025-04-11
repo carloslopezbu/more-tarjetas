@@ -30,6 +30,11 @@ const items = [
     icon: ListCheck
   },
   {
+    title: "Galeria",
+    url: "/photos",
+    icon: icons.GalleryHorizontal
+  },
+  {
     title: "Contraseñas",
     url: "/passwords",
     icon: icons.Lock,

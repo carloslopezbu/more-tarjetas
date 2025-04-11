@@ -5,6 +5,7 @@ import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TaskListManager from "./components/TaskListManager";
 import PasswordManager from "./components/PasswordManager";
+import PhotoManager from "./components/PhotoManager";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(() => {
@@ -53,6 +54,15 @@ export default function App() {
         element={
           <ProtectedRoute loggedIn={loggedIn}>
             <PasswordManager />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/photos/"
+        element={
+          <ProtectedRoute loggedIn={loggedIn}>
+            <PhotoManager />
           </ProtectedRoute>
         }
       />
