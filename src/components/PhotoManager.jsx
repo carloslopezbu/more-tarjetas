@@ -11,6 +11,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion"
 
 import { Plus } from "lucide-react"
+import Home from "./Home"
 
 const user = JSON.parse(localStorage.getItem("user")) || null
 const userEmail = user?.email ?? null
@@ -110,7 +111,7 @@ export default function PhotoManager() {
           {albums.map((album) => (
             <li
               key={album.id}
-              className={`cursor-pointer p-3 rounded ring-2 ring-rose-400 m-1 ${
+              className={`cursor-pointer p-3 rounded ring-1 ring-rose-400 m-1 ${
                 selectedAlbum === album.id
                   ? "bg-rose-400 font-bold"
                   : "hover:bg-rose-400"
@@ -218,6 +219,8 @@ export default function PhotoManager() {
           </div>
         </div>
       )}
+
+      <Home />
     </div>
   )
 }

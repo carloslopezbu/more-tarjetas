@@ -63,19 +63,37 @@ export async function fetchAlbums(userEmail) {
   return data
 }
 
-export async function fechtAmbumPhotos(userEmail, albumId) {
+export async function fechtAmbumPhotos(userEmail, albumName) {
+
   const { data, error } = await supabase
-    .from("photos")
-    .select("*")
-    .eq("user_email", userEmail)
-    .eq("album_id", albumId)
+    .from("album")
+    .select("id")
+    .eq("name", albumName)
 
   if (error) {
+    console.error("Error fetching album ID:", error)
+    return []
+  }
+
+  const albumId = data[0]?.id
+  if (!albumId) {
+    console.error("Album not found")
+    return []
+  }
+
+  const { data: photos, error: error2 } = await supabase
+    .from("photos")
+    .select("*")
+    .eq("album_id", albumId)
+    .eq("user_email", userEmail)
+                                
+
+  if (error2) {
     console.error("Error fetching album photos:", error)
     return []
   }
 
-  return data
+  return photos
 }
 
 // Create a new album

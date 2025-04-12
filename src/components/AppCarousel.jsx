@@ -7,7 +7,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel"
 
-import { fetchPhotos } from "@/api/Photos"
+import { fechtAmbumPhotos } from "@/api/Photos"
 
 const user = JSON.parse(localStorage.getItem("user")) || null
 const userEmail = user?.email ?? null
@@ -19,7 +19,14 @@ export function AppCarousel() {
   React.useEffect(() => {
     const loadImages = async () => {
       if (!userEmail) return
-      const fetchedImages = await fetchPhotos(userEmail)
+      if (localStorage.getItem("home-photos")) {
+        const cachedImages = JSON.parse(localStorage.getItem("home-photos"))
+        setImages(cachedImages)
+        return
+      }
+      const fetchedImages = await fechtAmbumPhotos(userEmail, "Inicio")
+      console.log("fetchedImages", fetchedImages)
+      localStorage.setItem("home-photos", JSON.stringify(fetchedImages))
       setImages(fetchedImages)
     }
 
