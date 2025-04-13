@@ -10,8 +10,9 @@ import {
 } from "@/api/Photos"
 import { motion, AnimatePresence } from "framer-motion"
 
-import { Plus } from "lucide-react"
+import { Plus, CameraIcon } from "lucide-react"
 import Home from "./Home"
+import { SidebarMenuButton, SidebarProvider, SidebarMenu, SidebarMenuItem } from "./ui/sidebar"
 
 const user = JSON.parse(localStorage.getItem("user")) || null
 const userEmail = user?.email ?? null
@@ -91,9 +92,9 @@ export default function PhotoManager() {
     : photos
 
   return (
-    <div className="flex h-screen bg-rose-50">
+    <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="w-72 bg-rose-100 p-5 flex flex-col">
+      <aside className="w-72 bg-rose-200 p-5 flex flex-col h-full overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">📁 Álbumes</h2>
 
         <div className="flex mb-4 gap-2">
@@ -102,26 +103,30 @@ export default function PhotoManager() {
             value={newAlbumName}
             onChange={(e) => setNewAlbumName(e.target.value)}
           />
-          <Button onClick={handleCreateAlbum} className="bg-rose-400 hover:bg-rose-500 transition-all duration-200">
+          <Button onClick={handleCreateAlbum} className="bg-rose-300 hover:bg-rose-400 transition-all duration-200">
             <Plus size={24} />
           </Button>
         </div>
 
-        <ul className="space-y-2 w-64">
-          {albums.map((album) => (
-            <li
-              key={album.id}
-              className={`cursor-pointer p-3 rounded ring-1 ring-rose-400 m-1 ${
-                selectedAlbum === album.id
-                  ? "bg-rose-400 font-bold"
-                  : "hover:bg-rose-400"
-              }`}
-              onClick={() => setSelectedAlbum(album.id)}
-            >
-              📷 {album.name}
-            </li>
-          ))}
-        </ul>
+        <SidebarProvider>
+          <SidebarMenu>
+            {albums.map((album) => (
+              <SidebarMenuItem key={album.id}>
+                <SidebarMenuButton
+                  className={`flex items-center gap-2 ${
+                    selectedAlbum === album.id
+                      ? "bg-rose-400 font-bold text-white"
+                      : "hover:bg-rose-300"
+                  }`}
+                  onClick={() => setSelectedAlbum(album.id)}
+                >
+                  <CameraIcon size={24} />
+                  <span>{album.name}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarProvider>
       </aside>
 
       {/* Main content */}
@@ -131,7 +136,7 @@ export default function PhotoManager() {
         {/* Toggle Upload */}
         <Button
           onClick={() => setShowUploadSection(!showUploadSection)}
-          className="mb-4 bg-rose-400 hover:bg-rose-500 transition-all duration-200"
+          className="mb-4 bg-rose-300 hover:bg-rose-400 transition-all duration-200"
         >
           {showUploadSection ? "⬆️ Ocultar Subida" : "📤 Subir Nueva Foto"}
         </Button>
@@ -150,17 +155,17 @@ export default function PhotoManager() {
                 value={newPhotoTitle}
                 onChange={(e) => setNewPhotoTitle(e.target.value)}
                 placeholder="Título de la foto"
-                className="flex-1 min-w-[200px]"
+                className="flex-1 min-w-[200px] h-13"
               />
               <Input
                 type="file"
                 onChange={(e) => setNewPhotoFile(e.target.files[0])}
-                className="flex-1 min-w-[200px]"
+                className="flex-1 min-w-[200px] h-13"
               />
               <select
                 value={selectedAlbum}
                 onChange={(e) => setSelectedAlbum(e.target.value)}
-                className="border rounded px-4 py-2"
+                className="border rounded px-4 py-2 h-13"
               >
                 <option value="">Seleccionar Álbum</option>
                 {albums.map((album) => (
@@ -169,7 +174,7 @@ export default function PhotoManager() {
                   </option>
                 ))}
               </select>
-              <Button onClick={handleUploadPhoto}>📤 Subir</Button>
+              <Button className="bg-rose-300 hover:bg-rose-400"onClick={handleUploadPhoto}>📤 Subir</Button>
             </motion.div>
           )}
         </AnimatePresence>
