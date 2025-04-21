@@ -17,7 +17,7 @@ export default function Login({setLoggedIn, setUser}) {
         <img
           src="more.jpeg"
           alt="Image"
-          className="blur-lg object-cover object-center w-full h-full"
+          className="object-center w-full h-full"
         />
       </div>
     </div>

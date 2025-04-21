@@ -47,7 +47,7 @@ export function AppCarousel() {
                   <img
                     src={img.url}
                     alt={img.title}
-                    className="w-full h-full object-cover rounded-lg blur-md"
+                    className="w-full h-full object-cover rounded-lg"
                   />
                 </CardContent>
               </Card>
