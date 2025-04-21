@@ -190,7 +190,7 @@ export default function PhotoManager() {
               <img
                 src={photo.url}
                 alt={photo.title}
-                className="w-full h-64 object-cover transition-transform hover:scale-105 blur-lg"
+                className="w-full h-64 object-cover transition-transform hover:scale-105"
               />
               <div className="p-4">
                 <h3 className="text-lg font-semibold">{photo.title}</h3>
