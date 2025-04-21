@@ -27,11 +27,11 @@ export function AppCarousel() {
   React.useEffect(() => {
     const loadImages = async () => {
       if (!userEmail) return
-      // if (localStorage.getItem("home-photos")) {
-      //   const cachedImages = JSON.parse(localStorage.getItem("home-photos"))
-      //   setImages(shuffleArray(cachedImages))
-      //   return
-      // }
+      if (localStorage.getItem("home-photos")) {
+        const cachedImages = JSON.parse(localStorage.getItem("home-photos"))
+        setImages(shuffleArray(cachedImages))
+        return
+      }
       const fetchedImages = await fetchPhotos(userEmail)
       // console.log("fetchedImages", fetchedImages)
       localStorage.setItem("home-photos", JSON.stringify(fetchedImages))

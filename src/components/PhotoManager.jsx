@@ -35,7 +35,7 @@ export default function PhotoManager() {
       const cachedAlbums = JSON.parse(localStorage.getItem("albums"))
       const cachedPhotos = JSON.parse(localStorage.getItem("photos"))
 
-      if (cachedAlbums && cachedPhotos && false) {
+      if (cachedAlbums && cachedPhotos) {
         setAlbums(cachedAlbums)
         setPhotos(cachedPhotos)
       } else {
