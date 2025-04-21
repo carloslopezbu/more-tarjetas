@@ -19,11 +19,11 @@ const items = [
     url: "/home",
     icon: Home,
   },
-  {
-    title: "Calendario",
-    url: "/calendar",
-    icon: Calendar,
-  },
+  // {
+  //   title: "Calendario",
+  //   url: "/calendar",
+  //   icon: Calendar,
+  // },
   {
     title: "Lista de tareas",
     url: "/tasklist",
@@ -39,11 +39,11 @@ const items = [
     url: "/passwords",
     icon: icons.Lock,
   },
-  {
-    title: "Configuración",
-    url: "#",
-    icon: Settings,
-  },
+  // {
+  //   title: "Configuración",
+  //   url: "#",
+  //   icon: Settings,
+  // },
 ];
 
 export function AppSidebar() {
