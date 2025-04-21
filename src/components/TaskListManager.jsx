@@ -87,7 +87,7 @@ export default function TaskListManager() {
           placeholder="Nueva lista"
           className="flex-1 ring-2 ring-rose-300 focus:ring-rose-500 transition-all duration-200"
         />
-        <Button onClick={addList} size="icon">
+        <Button onClick={addList} size="icon" className="bg-rose-300 hover:bg-rose-400">
           <Plus size={20} />
         </Button>
       </div>
@@ -109,7 +109,7 @@ export default function TaskListManager() {
                     }}
                     size="icon"
                     variant="ghost"
-                    className="text-red-500 hover:text-red-700"
+                    className="bg-rose-300 hover:bg-rose-400"
                   >
                     <Trash2 size={24} />
                   </Button>

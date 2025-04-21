@@ -10,7 +10,7 @@ import {
 } from "@/api/Photos"
 import { motion, AnimatePresence } from "framer-motion"
 
-import { Plus, CameraIcon } from "lucide-react"
+import { Plus, CameraIcon, Trash } from "lucide-react"
 import Home from "./Home"
 import { SidebarMenuButton, SidebarProvider, SidebarMenu, SidebarMenuItem } from "./ui/sidebar"
 
@@ -62,29 +62,52 @@ export default function PhotoManager() {
     }
   }
 
-  const handleUploadPhoto = async () => {
-    if (!newPhotoTitle.trim() || !newPhotoFile || !selectedAlbum) return
+  const handleUploadPhotos = async () => {
+    if (!newPhotoFile || !selectedAlbum) return
 
-    const imageUrl = await uploadImageToStorage(newPhotoFile, userId)
-    if (!imageUrl) {
-      console.error("Error al obtener la URL de la imagen.")
-      return
+    const uploadedPhotos = []
+    for (const file of newPhotoFile) {
+      const imageUrl = await uploadImageToStorage(file, userId)
+      if (!imageUrl) {
+        console.error(`Error al obtener la URL de la imagen: ${file.name}`)
+        continue
+      }
+
+      const photo = await uploadPhoto({
+        title: file.name,
+        url: imageUrl,
+        albumId: selectedAlbum,
+        userEmail,
+      })
+
+      if (photo) {
+        uploadedPhotos.push(photo)
+      }
     }
 
-    const photo = await uploadPhoto({
-      title: newPhotoTitle,
-      url: imageUrl,
-      albumId: selectedAlbum,
-      userEmail,
-    })
-
-    if (photo) {
-      const updatedPhotos = [...photos, photo]
+    if (uploadedPhotos.length > 0) {
+      const updatedPhotos = [...photos, ...uploadedPhotos]
       setPhotos(updatedPhotos)
       localStorage.setItem("photos", JSON.stringify(updatedPhotos))
-      setNewPhotoTitle("")
       setNewPhotoFile(null)
     }
+  }
+
+  const handleDeletePhoto = async (photoId) => {
+    const updatedPhotos = photos.filter((photo) => photo.id !== photoId)
+    setPhotos(updatedPhotos)
+    localStorage.setItem("photos", JSON.stringify(updatedPhotos))
+    // Optionally, call an API to delete the photo from the backend
+  }
+
+  const handleDeleteAlbum = async (albumId) => {
+    const updatedAlbums = albums.filter((album) => album.id !== albumId)
+    setAlbums(updatedAlbums)
+    localStorage.setItem("albums", JSON.stringify(updatedAlbums))
+    const updatedPhotos = photos.filter((photo) => photo.album_id !== albumId)
+    setPhotos(updatedPhotos)
+    localStorage.setItem("photos", JSON.stringify(updatedPhotos))
+    // Optionally, call an API to delete the album from the backend
   }
 
   const filteredPhotos = selectedAlbum
@@ -112,17 +135,27 @@ export default function PhotoManager() {
           <SidebarMenu>
             {albums.map((album) => (
               <SidebarMenuItem key={album.id}>
-                <SidebarMenuButton
-                  className={`flex items-center gap-2 ${
-                    selectedAlbum === album.id
-                      ? "bg-rose-400 font-bold text-white"
-                      : "hover:bg-rose-300"
-                  }`}
-                  onClick={() => setSelectedAlbum(album.id)}
-                >
-                  <CameraIcon size={24} />
-                  <span>{album.name}</span>
-                </SidebarMenuButton>
+                <div className="flex items-center justify-between">
+                  <SidebarMenuButton
+                    className={`flex items-center gap-2 ${
+                      selectedAlbum === album.id
+                        ? "bg-rose-400 font-bold text-white"
+                        : "hover:bg-rose-300"
+                    }`}
+                    onClick={() => setSelectedAlbum(album.id)}
+                  >
+                    <CameraIcon size={24} />
+                    <span>{album.name}</span>
+                  </SidebarMenuButton>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="text-red-500 hover:text-red-700"
+                    onClick={() => handleDeleteAlbum(album.id)}
+                  >
+                    <Trash size={24} />
+                  </Button>
+                </div>
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
@@ -152,14 +185,9 @@ export default function PhotoManager() {
               className="overflow-hidden flex gap-4 mb-6 flex-wrap"
             >
               <Input
-                value={newPhotoTitle}
-                onChange={(e) => setNewPhotoTitle(e.target.value)}
-                placeholder="Título de la foto"
-                className="flex-1 min-w-[200px] h-13"
-              />
-              <Input
                 type="file"
-                onChange={(e) => setNewPhotoFile(e.target.files[0])}
+                multiple
+                onChange={(e) => setNewPhotoFile(e.target.files)}
                 className="flex-1 min-w-[200px] h-13"
               />
               <select
@@ -174,7 +202,12 @@ export default function PhotoManager() {
                   </option>
                 ))}
               </select>
-              <Button className="bg-rose-300 hover:bg-rose-400"onClick={handleUploadPhoto}>📤 Subir</Button>
+              <Button
+                className="bg-rose-300 hover:bg-rose-400"
+                onClick={handleUploadPhotos}
+              >
+                📤 Subir
+              </Button>
             </motion.div>
           )}
         </AnimatePresence>
@@ -184,17 +217,25 @@ export default function PhotoManager() {
           {filteredPhotos.map((photo) => (
             <div
               key={photo.id}
-              className="bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer"
-              onClick={() => setSelectedPhoto(photo)}
+              className="bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer relative"
             >
               <img
                 src={photo.url}
                 alt={photo.title}
                 className="w-full h-64 object-cover transition-transform hover:scale-105"
+                onClick={() => setSelectedPhoto(photo)}
               />
-              <div className="p-4">
+              {/* <div className="p-4">
                 <h3 className="text-lg font-semibold">{photo.title}</h3>
-              </div>
+              </div> */}
+              <Button
+                size="icon"
+                variant="ghost"
+                className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                onClick={() => handleDeletePhoto(photo.id)}
+              >
+                <Trash size={24} />
+              </Button>
             </div>
           ))}
         </div>

@@ -187,7 +187,7 @@ export default function TaskList({ type }) {
           placeholder="Nueva tarea"
           className="flex-1"
         />
-        <Button onClick={addTask} size="icon" variant="default">
+        <Button onClick={addTask} size="icon" variant="default" className="bg-rose-300 hover:bg-rose-400">
           <Plus size={24} />
         </Button>
       </div>

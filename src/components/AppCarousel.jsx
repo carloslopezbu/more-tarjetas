@@ -7,10 +7,18 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel"
 
-import { fechtAmbumPhotos } from "@/api/Photos"
+import { fetchPhotos } from "@/api/Photos"
 
 const user = JSON.parse(localStorage.getItem("user")) || null
 const userEmail = user?.email ?? null
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[array[i], array[j]] = [array[j], array[i]]
+  }
+  return array
+}
 
 export function AppCarousel() {
   const plugin = React.useRef(Autoplay({ delay: 4000, stopOnInteraction: false }))
@@ -21,11 +29,11 @@ export function AppCarousel() {
       if (!userEmail) return
       if (localStorage.getItem("home-photos")) {
         const cachedImages = JSON.parse(localStorage.getItem("home-photos"))
-        setImages(cachedImages)
+        setImages(shuffleArray(cachedImages))
         return
       }
-      const fetchedImages = await fechtAmbumPhotos(userEmail, "Inicio")
-      console.log("fetchedImages", fetchedImages)
+      const fetchedImages = await fetchPhotos(userEmail)
+      // console.log("fetchedImages", fetchedImages)
       localStorage.setItem("home-photos", JSON.stringify(fetchedImages))
       setImages(fetchedImages)
     }
