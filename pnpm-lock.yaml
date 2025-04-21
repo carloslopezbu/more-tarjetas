@@ -56,9 +56,6 @@ importers:
       framer-motion:
         specifier: ^12.6.3
         version: 12.6.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      gapi-script:
-        specifier: ^1.2.0
-        version: 1.2.0
       googleapi:
         specifier: ^1.0.2
         version: 1.0.2
@@ -1382,9 +1379,6 @@ packages:
 
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
-
-  gapi-script@1.2.0:
-    resolution: {integrity: sha512-NKTVKiIwFdkO1j1EzcrWu/Pz7gsl1GmBmgh+qhuV2Ytls04W/Eg5aiBL91SCiBM9lU0PMu7p1hTVxhh1rPT5Lw==}
 
   gaxios@6.7.1:
     resolution: {integrity: sha512-LDODD4TMYx7XXdpwxAVRAIAuB0bzv0s+ywFonY46k126qzQHT9ygyoa9tncmOiQmmDrik65UYsEkv3lbfqQ3yQ==}
@@ -3269,8 +3263,6 @@ snapshots:
     optional: true
 
   function-bind@1.1.2: {}
-
-  gapi-script@1.2.0: {}
 
   gaxios@6.7.1:
     dependencies:
