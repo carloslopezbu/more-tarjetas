@@ -15,7 +15,7 @@ export default function Login({setLoggedIn, setUser}) {
       </div>
       <div className="relative hidden lg:block">
         <img
-          src="more.jpeg"
+          src="moreplaya.jpeg"
           alt="Image"
           className="object-center w-full h-full"
         />
