@@ -10,18 +10,18 @@ import PhotoManager from "./components/PhotoManager";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(() => {
-    return localStorage.getItem("loggedIn") === "true";
+    return sessionStorage.getItem("loggedIn") === "true";
   });
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = sessionStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
   const navigate = useNavigate();
 
   useEffect(() => {
-    localStorage.setItem("loggedIn", loggedIn);
+    sessionStorage.setItem("loggedIn", loggedIn);
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("user", JSON.stringify(user));
     }
   }, [loggedIn, user]);
 

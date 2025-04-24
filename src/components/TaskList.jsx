@@ -8,7 +8,7 @@ import { Trash2, Plus, Save } from "lucide-react"
 import { createSupabaseClient } from "@/api/Supabase"
 
 const supabase = createSupabaseClient()
-const user = JSON.parse(localStorage.getItem("user")) || null
+const user = JSON.parse(sessionStorage.getItem("user")) || null
 const userEmail = user?.email ?? null
 
 export default function TaskList({ type }) {

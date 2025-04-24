@@ -14,7 +14,7 @@ import { Plus, CameraIcon, Trash } from "lucide-react"
 import Home from "./Home"
 import { SidebarMenuButton, SidebarProvider, SidebarMenu, SidebarMenuItem } from "./ui/sidebar"
 
-const user = JSON.parse(localStorage.getItem("user")) || null
+const user = JSON.parse(sessionStorage.getItem("user")) || null
 const userEmail = user?.email ?? null
 const userId = user?.id ?? null
 
@@ -32,8 +32,8 @@ export default function PhotoManager() {
     const loadData = async () => {
       if (!userEmail) return
 
-      const cachedAlbums = JSON.parse(localStorage.getItem("albums"))
-      const cachedPhotos = JSON.parse(localStorage.getItem("photos"))
+      const cachedAlbums = JSON.parse(sessionStorage.getItem("albums"))
+      const cachedPhotos = JSON.parse(sessionStorage.getItem("photos"))
 
       if (cachedAlbums && cachedPhotos) {
         setAlbums(cachedAlbums)
@@ -43,8 +43,8 @@ export default function PhotoManager() {
         const fetchedPhotos = await fetchPhotos(userEmail)
         setAlbums(fetchedAlbums)
         setPhotos(fetchedPhotos)
-        localStorage.setItem("albums", JSON.stringify(fetchedAlbums))
-        localStorage.setItem("photos", JSON.stringify(fetchedPhotos))
+        sessionStorage.setItem("albums", JSON.stringify(fetchedAlbums))
+        sessionStorage.setItem("photos", JSON.stringify(fetchedPhotos))
       }
     }
 
@@ -57,7 +57,7 @@ export default function PhotoManager() {
     if (album) {
       const updatedAlbums = [...albums, album]
       setAlbums(updatedAlbums)
-      localStorage.setItem("albums", JSON.stringify(updatedAlbums))
+      sessionStorage.setItem("albums", JSON.stringify(updatedAlbums))
       setNewAlbumName("")
     }
   }
@@ -88,7 +88,7 @@ export default function PhotoManager() {
     if (uploadedPhotos.length > 0) {
       const updatedPhotos = [...photos, ...uploadedPhotos]
       setPhotos(updatedPhotos)
-      localStorage.setItem("photos", JSON.stringify(updatedPhotos))
+      sessionStorage.setItem("photos", JSON.stringify(updatedPhotos))
       setNewPhotoFile(null)
     }
   }
@@ -96,17 +96,17 @@ export default function PhotoManager() {
   const handleDeletePhoto = async (photoId) => {
     const updatedPhotos = photos.filter((photo) => photo.id !== photoId)
     setPhotos(updatedPhotos)
-    localStorage.setItem("photos", JSON.stringify(updatedPhotos))
+    sessionStorage.setItem("photos", JSON.stringify(updatedPhotos))
     // Optionally, call an API to delete the photo from the backend
   }
 
   const handleDeleteAlbum = async (albumId) => {
     const updatedAlbums = albums.filter((album) => album.id !== albumId)
     setAlbums(updatedAlbums)
-    localStorage.setItem("albums", JSON.stringify(updatedAlbums))
+    sessionStorage.setItem("albums", JSON.stringify(updatedAlbums))
     const updatedPhotos = photos.filter((photo) => photo.album_id !== albumId)
     setPhotos(updatedPhotos)
-    localStorage.setItem("photos", JSON.stringify(updatedPhotos))
+    sessionStorage.setItem("photos", JSON.stringify(updatedPhotos))
     // Optionally, call an API to delete the album from the backend
   }
 

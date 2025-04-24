@@ -6,7 +6,7 @@ import { createSupabaseClient } from "@/api/Supabase"
 import Home from "./Home"
 
 const supabase = createSupabaseClient()
-const user = JSON.parse(localStorage.getItem("user")) || null
+const user = JSON.parse(sessionStorage.getItem("user")) || null
 const userEmail = user?.email ?? null
 
 export default function PasswordManager() {

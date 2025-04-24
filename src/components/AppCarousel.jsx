@@ -9,7 +9,7 @@ import {
 
 import { fetchPhotos } from "@/api/Photos"
 
-const user = JSON.parse(localStorage.getItem("user")) || null
+const user = JSON.parse(sessionStorage.getItem("user")) || null
 const userEmail = user?.email ?? null
 
 function shuffleArray(array) {
@@ -27,14 +27,14 @@ export function AppCarousel() {
   React.useEffect(() => {
     const loadImages = async () => {
       if (!userEmail) return
-      if (localStorage.getItem("home-photos")) {
-        const cachedImages = JSON.parse(localStorage.getItem("home-photos"))
+      if (sessionStorage.getItem("home-photos")) {
+        const cachedImages = JSON.parse(sessionStorage.getItem("home-photos"))
         setImages(shuffleArray(cachedImages))
         return
       }
       const fetchedImages = await fetchPhotos(userEmail)
       // console.log("fetchedImages", fetchedImages)
-      localStorage.setItem("home-photos", JSON.stringify(fetchedImages))
+      sessionStorage.setItem("home-photos", JSON.stringify(fetchedImages))
       setImages(fetchedImages)
     }
 
